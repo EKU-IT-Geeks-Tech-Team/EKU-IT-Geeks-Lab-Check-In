@@ -1,0 +1,123 @@
+{% extends 'layout.html.j2' %}
+
+{% block styles %}
+    <style>
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+    </style>
+{% endblock styles %}
+
+{% block content %}
+
+
+    <!-- CARD INPUT FORM -->
+    <h1 style="border: 1px solid #333; border-radius: 5px; margin-top: 5px; color: #fff; background-color: #333; padding: 5px 0;" class='mx-auto text-center'>Please Swipe Card</h1>
+
+    <!-- MAIN -->
+    <div class="row">
+
+        <!--Open Seats -->
+        <div class="col-md-4">
+            <h2 class="text-center">Open Seats</h2>
+            {% for seat_type in seat_statuses.keys() %}
+                {% if seat_statuses[seat_type]|selectattr("status", "equalto", "Open")|list|length %}
+                    <h3 class="text-center">{{ seat_type }}</h3>
+                    {% for seat in seat_statuses[seat_type] %}
+                        {% if seat.status == "Open" %}
+                            <button class="btn btn-success btn-block">{{ seat.label }}</button>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- In Use -->
+        <div class="col-md-4">
+            <h2 class="text-center">In Use</h2>
+            {% for seat_type in seat_statuses.keys() %}
+                {% if seat_statuses[seat_type]|selectattr("status", "equalto", "In Use")|list|length %}
+                    <h3 class="text-center">{{ seat_type }}</h3>
+                    {% for seat in seat_statuses[seat_type] %}
+                        {% if seat.status == "In Use" %}
+                            <button class="btn btn-warning btn-lg btn-block">{{ seat.label }}</button>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Needs Cleaning -->
+        <div class="col-md-4">
+            <h2 class="text-center">Needs Cleaning</h2>
+            {% for seat_type in seat_statuses.keys() %}
+                {% if seat_statuses[seat_type]|selectattr("status", "equalto", "Needs Cleaning")|list|length %}
+                    <h3 class="text-center">{{ seat_type }}</h3>
+                    {% for seat in seat_statuses[seat_type] %}
+                        {% if seat.status == "Needs Cleaning" %}
+                            <a class="btn btn-danger btn-lg btn-block" href="{{ url_for('main.seat_cleaned', seat_label=seat.label) }}">{{ seat.label }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            {#{% if current_students %}
+                <h2>Current Students</h2>
+                {% for student in current_students %}
+                    <p>{{ student.full_name }} ({{ get_student_seat(student).label }})</p>
+                {% endfor %}
+            {% endif %}#}
+        </div>
+
+    </div>
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" hidden>
+    Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Seat Type Selection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/create_transaction" method="POST">
+                    <input type="text" name="swipe_number" id="swipe_number" hidden>
+                    <div class="modal-body">
+                        <div class="btn-group-toggle" data-toggle="buttons" id="buttons">
+                            ...
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="seatTypeSelectButton">Select</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/imageMapResizer.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.imagemapster.js') }}"></script>
+
+<script>
+    // need to manually specify actual image size
+    const WIDTH = 2095
+    const HEIGHT = 1675
+    
+    const current_swipe_numbers = {{ current_swipe_numbers }}
+</script>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock scripts %}

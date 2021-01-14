@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Swipe Test</title>
+  </head>
+
+  <body>
+    <form action="/search" method="POST">
+      <label for="card_input">Swipe Card</label>
+      <input type="text" name="card_input" id="card_input" />
+      <button type="submit">Search</button>
+    </form>
+
+    <br />
+
+    <form action="/search" method="POST">
+      <label for="student_id">Student ID</label>
+      <input type="text" name="student_id" id="student_id" />
+      <button type="submit">Search</button>
+    </form>
+
+    <p>{{ student.full_name }}</p>
+  </body>
+</html>

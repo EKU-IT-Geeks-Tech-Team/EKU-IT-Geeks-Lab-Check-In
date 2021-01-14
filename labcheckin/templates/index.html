@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab Swipe In</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+      integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="six columns">
+          <form action="{{url_for('examples.add_transaction')}}" method="POST">
+            <label for="card_input">Swipe Card</label>
+            <div class="row">
+              <div class="eight columns">
+                <input
+                  class="u-full-width"
+                  type="text"
+                  name="card_input"
+                  id="card_input"
+                  autofocus
+                />
+              </div>
+              <div class="four columns">
+                <button class="u-full-width" type="submit">Go</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="six columns">
+          <form action="{{url_for('examples.add_transaction')}}" method="POST">
+            <label for="student_id">Student ID</label>
+            <div class="row">
+              <div class="eight columns">
+                <input
+                  class="u-full-width"
+                  type="text"
+                  name="student_id"
+                  id="student_id"
+                />
+              </div>
+              <div class="four columns">
+                <button class="u-full-width" type="submit">Go</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="twelve columns">
+          <form action="{{url_for('examples.clear_transactions')}}">
+            <button class="u-full-width" type="submit">Clear</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="eight columns">
+          <table class="u-full-width">
+            <thead>
+              <th>Name</th>
+              <th>In Time</th>
+              <th>Out Time</th>
+            </thead>
+            <tbody>
+              {% for t in transactions %}
+              <tr>
+                <td>{{ t.student.full_name }}</td>
+                <td>
+                  {{ utc2local(t.in_time).strftime("%m/%d/%Y %I:%M:%S %p") }}
+                </td>
+                <td>
+                  {% if t.out_time %} {{
+                  utc2local(t.out_time).strftime("%m/%d/%Y %I:%M:%S %p") }}
+                </td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="four columns">
+          <h3>Current Students</h3>
+          <ul>
+            {% for student in current_students %}
+            <li>{{ student.full_name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
