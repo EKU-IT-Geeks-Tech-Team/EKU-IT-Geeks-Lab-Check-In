@@ -1,4 +1,4 @@
-from flask import Blueprint, request, redirect, url_for, render_template
+from flask import Blueprint, flash, request, redirect, url_for, render_template
 from flask import json
 from labcheckin.models import Seat, Student, Transaction
 from labcheckin import db
@@ -48,7 +48,7 @@ def index():
         current_students=current_students,
         current_swipe_numbers=current_swipe_numbers,
         get_student_seat=get_student_seat,
-        seat_statuses=seat_statuses
+        seat_statuses=seat_statuses,
     )
 
 
@@ -72,28 +72,31 @@ def create_transaction():
     student = Student.query.filter_by(
         swipe_number=swipe_number).first()
 
-    last_t = Transaction.query.filter_by(
-        student=student).order_by(Transaction.in_time.desc()).first()
+    if student:
+        last_t = Transaction.query.filter_by(
+            student=student).order_by(Transaction.in_time.desc()).first()
 
-    # if the transaction and the out_time does not exist update it with time out
-    if last_t and not last_t.out_time:
-        seat = last_t.seat
-        seat.status = "Needs Cleaning"
+        # if the transaction and the out_time does not exist update it with time out
+        if last_t and not last_t.out_time:
+            seat = last_t.seat
+            seat.status = "Needs Cleaning"
 
-        currentTime = datetime.now()
-        last_t.out_time = currentTime
-        db.session.commit()
+            currentTime = datetime.now()
+            last_t.out_time = currentTime
+            db.session.commit()
 
-    # otherwise create a new transaction
+        # otherwise create a new transaction
+        else:
+            seatType = request.form.get("options")
+            seat = get_next_available(seatType)
+
+            seat.status = "In Use"
+
+            t = Transaction(student_id=student.student_id, seat_id=seat.id)
+            db.session.add(t)
+            db.session.commit()
     else:
-        seatType = request.form.get("options")
-        seat = get_next_available(seatType)
-
-        seat.status = "In Use"
-
-        t = Transaction(student_id=student.student_id, seat_id=seat.id)
-        db.session.add(t)
-        db.session.commit()
+        flash("No student found", "danger")
 
     return redirect(url_for("main.index"))
 
