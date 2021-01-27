@@ -1,0 +1,24 @@
+{% extends 'layout.html.j2' %}
+
+{% block content %}
+<div class="row my-3">
+    <a href="{{ url_for('main.index') }}" class="btn btn-primary">Back</a>
+</div>
+<div class="row d-flex flex-column justify-content-center align-items-center">
+    <form class="w-50" method="POST">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" class="form-control" id="fullName" name="fullName">
+        </div>
+        <div class="form-group">
+            <label for="studentID">Student ID #</label>
+            <input type="studentID" class="form-control" id="studentID" name="studentID">
+        </div>
+        <div class="form-group">
+            <label for="swipeNum">Swipe Card</label>
+            <input type="swipeNum" class="form-control" id="swipeNum" name="swipeNum">
+        </div>
+        <button hidden type="submit" class="btn btn-primary">Add Student</button>
+    </form>
+</div>
+{% endblock content %}
