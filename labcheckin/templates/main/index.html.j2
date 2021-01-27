@@ -14,7 +14,15 @@
 
 
     <!-- CARD INPUT FORM -->
-    <h1 style="border: 1px solid #333; border-radius: 5px; margin-top: 5px; color: #fff; background-color: #333; padding: 5px 0;" class='mx-auto text-center'>Please Swipe Card</h1>
+    <div class="row d-flex .flex-row justify-content-between bg-dark text-white rounded">
+        <div></div>
+        <div></div>
+        <div class="siv"></div>
+        <h1>Please Swipe Card</h1>
+        <div class="div"></div>
+        <a href="{{ url_for('main.add_student') }}" class="btn btn-success d-flex justify-content-center align-items-center">Add Student</a>
+    </div>
+    {# <h1 style="border: 1px solid #333; border-radius: 5px; margin-top: 5px; color: #fff; background-color: #333; padding: 5px 0;" class='mx-auto text-center'>Please Swipe Card</h1> #}
 
     <div class="row">
         <div class="col-md-12">
@@ -22,7 +30,12 @@
             {% if messages %}
                 <div class=flashes>
                 {% for category, message in messages %}
-                <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
                 {% endfor %}
                 </div>
             {% endif %}
@@ -56,7 +69,7 @@
                     <h3 class="text-center">{{ seat_type }}</h3>
                     {% for seat in seat_statuses[seat_type] %}
                         {% if seat.status == "In Use" %}
-                            <button class="btn btn-warning btn-lg btn-block">{{ seat.label }}</button>
+                            <a class="btn btn-warning btn-lg btn-block" href="{{ url_for('main.end_transaction', seat_label=seat.label) }}">{{ seat.label }}</a>
                         {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -134,11 +147,8 @@
 
     // show alerts for 5 seconds
     setTimeout(() => {
-        const alerts = document.querySelectorAll(".alert").forEach(alert => {
-            alert.remove()
-        })
-        
-    }, 5000);
+        $(".alert").alert('close')
+    }, 20000);
 </script>
 
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>

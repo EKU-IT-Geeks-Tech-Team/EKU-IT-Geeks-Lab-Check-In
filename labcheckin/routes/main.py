@@ -52,6 +52,31 @@ def index():
     )
 
 
+@main.route("/add", methods=["GET", "POST"])
+def add_student():
+    if request.method == "GET":
+        return render_template("main/add_student.html.j2")
+    else:
+        name = request.form.get("fullName")
+        studentID = request.form.get("studentID")
+        raw_swipe_input = request.form.get("swipeNum")
+
+        swipeNum = parse_card(raw_swipe_input)
+
+        new_student = Student(
+            student_id=studentID,
+            full_name=name,
+            swipe_number=swipeNum,
+        )
+
+        db.session.add(new_student)
+        db.session.commit()
+
+        flash("Student added successfully", "success")
+
+        return redirect(url_for("main.index"))
+
+
 @main.route("/validate_card/<card_input>", methods=["GET"])
 def validate_card(card_input):
     print(card_input)
@@ -98,6 +123,20 @@ def create_transaction():
     else:
         flash("No student found", "danger")
 
+    return redirect(url_for("main.index"))
+
+
+@main.route("/end_transaction/<seat_label>", methods=["GET"])
+def end_transaction(seat_label: str):
+    seat = Seat.query.filter_by(label=seat_label).first()
+    last_t = Transaction.query.filter_by(seat=seat).order_by(
+        Transaction.in_time.desc()).first()
+
+    seat.status = "Needs Cleaning"
+    currentTime = datetime.now()
+    last_t.out_time = currentTime
+
+    db.session.commit()
     return redirect(url_for("main.index"))
 
 
