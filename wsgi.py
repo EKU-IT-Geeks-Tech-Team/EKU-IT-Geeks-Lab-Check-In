@@ -28,9 +28,9 @@ if app.config["ENV"] == "development" and not os.path.exists(os.path.join(app.ro
         )
 
         # for now, this is the only data that will be in the local db
-        jadon = Student(
+        test_student = Student(
             student_id="901000000",
-            full_name="Calvert, Jadon N.",
+            full_name="Test Student",
             swipe_number="901000000"
         )
 
