@@ -115,13 +115,16 @@ def create_transaction():
         # otherwise create a new transaction
         else:
             seatType = request.form.get("options")
-            seat = get_next_available(seatType)
+            if seatType:
+                seat = get_next_available(seatType)
 
-            seat.status = "In Use"
+                seat.status = "In Use"
 
-            t = Transaction(student_id=student.student_id, seat_id=seat.id)
-            db.session.add(t)
-            db.session.commit()
+                t = Transaction(student_id=student.student_id, seat_id=seat.id)
+                db.session.add(t)
+                db.session.commit()
+            else:
+                flash("You must select a seat type", "danger")
     else:
         flash("No student found", "danger")
 
