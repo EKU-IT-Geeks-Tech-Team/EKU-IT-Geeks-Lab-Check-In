@@ -118,6 +118,8 @@ def create_transaction():
             if seatType:
                 seat = get_next_available(seatType)
 
+                flash(f"{seat.label} has been assigned", "success")
+
                 seat.status = "In Use"
 
                 t = Transaction(student_id=student.student_id, seat_id=seat.id)
