@@ -8,15 +8,19 @@
     <form class="w-50" method="POST">
         <div class="form-group">
             <label for="fullName">Full Name</label>
-            <input type="text" class="form-control" id="fullName" name="fullName">
+            <input type="text" class="form-control" id="fullName" name="fullName" required>
         </div>
         <div class="form-group">
             <label for="studentID">Student ID #</label>
-            <input type="studentID" class="form-control" id="studentID" name="studentID">
+            <input type="studentID" class="form-control" id="studentID" name="studentID" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
         </div>
         <div class="form-group">
             <label for="swipeNum">Swipe Card</label>
-            <input type="swipeNum" class="form-control" id="swipeNum" name="swipeNum">
+            <input type="swipeNum" class="form-control" id="swipeNum" name="swipeNum" required>
         </div>
         <button hidden type="submit" class="btn btn-primary">Add Student</button>
     </form>

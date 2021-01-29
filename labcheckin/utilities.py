@@ -45,13 +45,23 @@ def import_students_from_csv(filename):
         for row in reader:
             existing_student = Student.query.filter_by(
                 student_id=row["EKUID"]).first()
+
             if existing_student:
+                def hasNumbers(inputString):
+                    return any(char.isdigit() for char in inputString)
+
+                emails = [row["EMAIL"], existing_student.email]
+                correct_email = list(filter(hasNumbers, emails))[0]
+                existing_student.email = correct_email
+                db.session.commit()
+
                 continue
 
             new_student = Student(
                 student_id=row["EKUID"],
                 full_name=f"{row['FIRST_NAME']} {row['MIDDLE_NAME'] + ' ' if row['MIDDLE_NAME'] else ''}{row['LAST_NAME']}",
-                swipe_number=row['SWIPE_NUMBER'],
+                swipe_number=row['SWIPE_NUMBER'] if row['SWIPE_NUMBER'] else row["EKUID"],
+                email=row["EMAIL"]
             )
             db.session.add(new_student)
-            db.session.commit()
+    db.session.commit()

@@ -31,7 +31,8 @@ if app.config["ENV"] == "development" and not os.path.exists(os.path.join(app.ro
         test_student = Student(
             student_id="901000000",
             full_name="Test Student",
-            swipe_number="901000000"
+            swipe_number="901000000",
+            email="test_student@eku.edu"
         )
 
         B1 = Seat(
@@ -148,7 +149,7 @@ if app.config["ENV"] == "development" and not os.path.exists(os.path.join(app.ro
             status="Open"
         )
 
-        db.session.add(jadon)
+        db.session.add(test_student)
         db.session.add(B1)
         db.session.add(B2)
         db.session.add(B3)

@@ -60,6 +60,7 @@ def add_student():
         name = request.form.get("fullName")
         studentID = request.form.get("studentID")
         raw_swipe_input = request.form.get("swipeNum")
+        email = request.form.get("email")
 
         swipeNum = parse_card(raw_swipe_input)
 
@@ -67,6 +68,7 @@ def add_student():
             student_id=studentID,
             full_name=name,
             swipe_number=swipeNum,
+            email=email
         )
 
         db.session.add(new_student)

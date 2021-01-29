@@ -7,6 +7,7 @@ class Student(db.Model):
     student_id = db.Column(db.String(9), primary_key=True)
     full_name = db.Column(db.String(80), nullable=False)
     swipe_number = db.Column(db.String(9), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     transactions = relationship("Transaction", back_populates="student")
 
     def __repr__(self):

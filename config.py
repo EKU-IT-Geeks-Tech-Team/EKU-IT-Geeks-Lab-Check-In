@@ -19,7 +19,8 @@ class ProductionConfig(Config):
     FLASK_ENV = "production"
 
     # DATABASE
-    SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+    DB_FILENAME = "test.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + DB_FILENAME
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
